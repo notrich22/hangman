@@ -1,5 +1,6 @@
 #pragma once
 #include "Round.h"
+//#define DEBUG
 using namespace std;
 class Game {
 protected:
@@ -20,7 +21,13 @@ public:
 		cout << "[1] Start game" << endl;
 		cout << "[2] Add word" << endl;
 		cout << "[3] Delete word" << endl;
+#ifdef DEBUG
 		cout << "[4] Change visibility of words" << endl;
+#endif // DEBUG
+#ifndef DEBUG
+		cout << endl;
+#endif // !DEBUG
+
 		cout << "[5] Exit" << endl;
 		if (show_words == true)
 			list_of_words();
@@ -29,8 +36,8 @@ public:
 		{
 		case '1': {
 			system("cls");
-			new Round(choose_word());
-			//delete Round();
+			Round* round = new Round(choose_word());
+			delete round;
 			menu(); }
 		case '2':
 			add_word();
@@ -40,6 +47,7 @@ public:
 			delete_word();
 			system("cls");
 			menu();
+#ifdef DEBUG
 		case '4':
 			if (show_words == false)
 				show_words = true;
@@ -47,6 +55,8 @@ public:
 				show_words = false;
 			system("cls");
 			menu();
+#endif // DEBUG
+
 		case '5':
 			cout << "Thank you for playing this game!" << endl;
 			system("pause");

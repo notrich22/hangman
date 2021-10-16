@@ -9,7 +9,6 @@ using namespace std;
 
 class Round {
 private:
-	vector<bool> is_opened = { false };
 	const string word;
 	time_t start, end;
 	vector<char> opened_symbols;
@@ -19,49 +18,101 @@ public:
 		time(&start);
 		update_field();
 	}
+	~Round() {
+	}
 	void update_field() {
 		system("cls");
-		
+		if (check_win()) {
+			win();
+		}
+		if (check_lose()) {
+			lose();
+		}
 		cout << "\tGuess the word:" << endl << " ";
-		/*for (int i = 0; i < word.length(); i++) {
-			if (is_opened[i])
-				cout << word[i] << " ";
-			else
-				cout << "_ ";
-		}*/
-		bool opened = false;
-
+		cout << "Current health: ";
+		for (int i = 0; i < lifes; i++)
+			cout << "* ";
+		cout << endl;
 		for (int i = 0; i < word.length(); i++) {
-			for (int j = 0; j < opened_symbols.size(); j++) {
-				if (word[i] == opened_symbols[j]) {
-					opened = true;
-				}
-			}
-			if (opened) {
-				opened = false;
-				cout << word[i] << " ";
-			}
-			else
-				cout << "_ ";
+			if (is_opened(word[i])) cout << word[i] << " "; else cout << "_ ";
 		}
 		cout << endl;
+		cout << endl;
 		ask_symb();
-		//check_symbols();
 	}
-	/*void check_symbols() {
-		for (int i = 0; i < word.length(); i++) {
-			for (int j = 0; j < opened_symbols.size(); j++) {
-				if (word[i] == opened_symbols[j]) {
-					is_opened[i] = true;
-					break;
-				}
-			}
+	bool is_opened(char ch) {
+		for (int i = 0; i < opened_symbols.size(); i++) {
+			if (ch == opened_symbols[i])
+				return true;
 		}
-	}*/
+		return false;
+	}
+	bool check_win() {
+		for(int i = 0; i < word.length(); i++)
+			if (!is_opened(word[i])) {
+				return false;
+			}
+		return true;
+	}
+	void win() {
+		time(&end);
+		cout << "\tHOOORAY!" << endl;
+		cout << "It took you " << difftime(end, start) << " seconds to win!" << endl;
+		cout << "Word was: " << word << endl;
+		cout << "You have opened: ";
+		for (int i = 0; i < opened_symbols.size(); i++) {
+			cout << "'" << opened_symbols[i] << "', ";
+		}
+		cout << endl;
+		cout << "You have lost only " << 6 - lifes << " lifes!" << endl;
+		system("pause");
+		//main();
+	}
+	void lose() {
+		time(&end);
+		cout << "\tWhoops!" << endl;
+		cout << "It took you " << difftime(end, start) << " seconds to lose!" << endl;
+		cout << "Word was: " << word << endl;
+		cout << "You have opened: ";
+		for (int i = 0; i < opened_symbols.size(); i++) {
+			cout << "'" << opened_symbols[i] << "', ";
+		}
+		cout << endl;
+		cout << "You have lost all your lifes!" << endl;
+		system("pause");
+		exit(0);
+		//main();
+	}
+	void check_lifes(char ch) {
+		bool match = false;
+		for (int i = 0; i < word.length(); i++) {
+			if (ch == word[i]) match = true;
+		}
+		if (!match)
+			lifes -= 1;
+	}
+	bool check_lose() {
+		if (lifes == 0)
+			return true;
+		return false;
+	}
 	void ask_symb() {
-		char ch;
-		cout << "Enter symbol: "; cin >> ch;
-		opened_symbols.push_back(ch);
+		string ch;
+		cout << "Enter symbol: ";
+		cin >> ch;
+		if (ch.length() > 1 || ((ch[0] < 'a' || ch[0] > 'z') && (ch[0] < 'A' || ch[0] > 'Z'))) {
+			cout << "Something wrong!!!" << endl;
+			system("pause");
+			update_field();
+		}
+		for(int i = 0; i < opened_symbols.size(); i++)
+			if (ch[0] == opened_symbols[i]) {
+				cout << "Be careful! It was already!" << endl;
+				system("pause");
+				update_field();
+			}
+		opened_symbols.push_back(ch[0]);
+		check_lifes(ch[0]);
 		update_field();
 	}
 };

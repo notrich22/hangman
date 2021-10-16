@@ -29,15 +29,18 @@ public:
 			else
 				cout << "_ ";
 		}*/
-		vector<bool> opened = { false };
+		bool opened = false;
+
 		for (int i = 0; i < word.length(); i++) {
 			for (int j = 0; j < opened_symbols.size(); j++) {
 				if (word[i] == opened_symbols[j]) {
-					opened[i] = true;
+					opened = true;
 				}
 			}
-			if (opened[i])
+			if (opened) {
+				opened = false;
 				cout << word[i] << " ";
+			}
 			else
 				cout << "_ ";
 		}

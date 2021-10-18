@@ -1,6 +1,6 @@
 #pragma once
 #include "Round.h"
-#define DEBUG
+//#define DEBUG
 using namespace std;
 class Game {
 private:

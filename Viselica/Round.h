@@ -32,6 +32,7 @@ public:
 		}
 		update_field();
 		ask_symb();
+		logic();
 	}
 	void update_field() {
 		cout << "\tGuess the word:" << endl << " ";
@@ -107,16 +108,15 @@ public:
 		if (ch.length() > 1 || ((ch[0] < 'a' || ch[0] > 'z') && (ch[0] < 'A' || ch[0] > 'Z'))) {
 			cout << "Something wrong!!!" << endl;
 			system("pause");
-			update_field();
+			return;
 		}
 		for(int i = 0; i < opened_symbols.size(); i++)
 			if (ch[0] == opened_symbols[i]) {
 				cout << "Be careful! It was already!" << endl;
 				system("pause");
-				update_field();
+				return;
 			}
 		opened_symbols.push_back(ch[0]);
 		check_lifes(ch[0]);
-		logic();
 	}
 };

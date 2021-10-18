@@ -1,9 +1,9 @@
 #pragma once
 #include "Round.h"
-//#define DEBUG
+#define DEBUG
 using namespace std;
 class Game {
-protected:
+private:
 	bool show_words = false;
 	const string filename = "Words.txt";
 	vector<string> words;
@@ -87,6 +87,14 @@ public:
 		cout << "Enter added word(or 0 to exit): "; cin >> temp;
 		if (temp == "0")
 			return;
+		for (int i = 0; i < temp.length(); i++) {
+			if (temp.length() < 2 || ((temp[i] < 'a' || temp[i] > 'z') && (temp[i] < 'A' || temp[i] > 'Z'))) {
+				cout << "Something wrong!!!" << endl;
+				system("pause");
+				system("cls");
+				menu();
+			}
+		}
 		words.push_back(temp);
 		for (int i = 0; i < temp.length(); i++)
 			temp[i] = temp[i] + '0';

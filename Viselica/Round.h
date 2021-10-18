@@ -16,18 +16,24 @@ private:
 public:
 	Round(string word) : word{ word } {
 		time(&start);
-		update_field();
+		logic();
 	}
 	~Round() {
 	}
-	void update_field() {
+	void logic() {
 		system("cls");
 		if (check_win()) {
 			win();
+			return;
 		}
 		if (check_lose()) {
 			lose();
+			return;
 		}
+		update_field();
+		ask_symb();
+	}
+	void update_field() {
 		cout << "\tGuess the word:" << endl << " ";
 		cout << "Current health: ";
 		for (int i = 0; i < lifes; i++)
@@ -38,7 +44,6 @@ public:
 		}
 		cout << endl;
 		cout << endl;
-		ask_symb();
 	}
 	bool is_opened(char ch) {
 		for (int i = 0; i < opened_symbols.size(); i++) {
@@ -66,7 +71,7 @@ public:
 		cout << endl;
 		cout << "You have lost only " << 6 - lifes << " lifes!" << endl;
 		system("pause");
-		//main();
+		system("cls");
 	}
 	void lose() {
 		time(&end);
@@ -80,8 +85,7 @@ public:
 		cout << endl;
 		cout << "You have lost all your lifes!" << endl;
 		system("pause");
-		exit(0);
-		//main();
+		system("cls");
 	}
 	void check_lifes(char ch) {
 		bool match = false;
@@ -113,6 +117,6 @@ public:
 			}
 		opened_symbols.push_back(ch[0]);
 		check_lifes(ch[0]);
-		update_field();
+		logic();
 	}
 };
